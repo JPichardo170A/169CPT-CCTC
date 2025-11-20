@@ -1,0 +1,71 @@
+---
+
+# 🌐 CCTC Networking Module
+
+Welcome to the **Networking Module** of the Cyber Common Technical Core (CCTC). This section focuses on building a strong foundation in computer networking concepts, protocols, and security practices. It serves as a structured archive of lessons, labs, and resources to support both classroom instruction and hands‑on exercises.
+
+---
+
+## 🎯 Purpose
+The Networking Module is designed to:
+- Introduce fundamental networking concepts and architectures  
+- Explore protocols such as TCP/IP, UDP, and ICMP  
+- Provide hands‑on labs for packet analysis, traffic capture, and socket programming  
+- Develop practical skills in reconnaissance, tunneling, and covert channels  
+- Strengthen understanding of network defense and traffic filtering  
+
+---
+
+## 📂 Structure
+```
+Networking/
+│── Lessons/        # Notes and breakdowns of networking topics
+│── Labs/           # Hands-on exercises and lab instructions
+│── Resources/      # External references and supplemental materials
+│── Tools/          # Utilities and scripts for networking tasks
+│── README.md       # Overview of the Networking Module (this file)
+```
+
+---
+
+## 📚 References & Resources
+- [CCTC Networking Curriculum Portal](https://cted.cybbh.io/tech-college/cttsb/cctc/net/Net/)  
+- [Miro Networking Board](https://miro.com/app/board/o9J_klSqCSY=/?share_link_id=16)  
+- [CyberChef](https://gchq.github.io/CyberChef/) – for data analysis and encoding  
+- Wireshark – for packet capture and traffic analysis  
+- NIST & MITRE ATT&CK Frameworks – for security context  
+
+---
+
+## 🧩 Networking Module Lab Topics
+- Day 1 & 2 – Network Fundamentals  
+- Day 3 – Traffic Capture  
+- Day 4 – Socket Programming  
+- Day 5 – Network Reconnaissance  
+- Day 6 – File Transfer & Redirection  
+- Day 7 & 8 – SSH Tunneling & Covert Channels  
+- Day 9 – Network Analysis  
+- Day 10 & 11 – Traffic Filtering  
+
+---
+
+## 🚀 How to Use
+- Start with **Lessons/** for theory and notes.  
+- Follow **Labs/** for practical exercises.  
+- Use **Resources/** for supplemental reading and references.  
+- Explore **Tools/** for utilities that support networking tasks.  
+
+---
+
+## 📬 Contact
+For questions, collaboration, or resource sharing, reach out:
+
+**Jonathan Pichardo**  
+Cyber Protection Team – CCTC Participant  
+📧 [jonathan.a.pichardo2.mil@army.mil](mailto:jonathan.a.pichardo2.mil@army.mil)
+
+---
+
+**Stay sharp. Stay curious. Lead with purpose.**
+
+---
