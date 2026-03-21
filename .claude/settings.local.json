@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find 'D:/CyberLab/GitHub/169CPT-CCTC/04 - SSH TUNNELING MODULE' -type f -not -path */.git/*)",
+      "Bash(mkdir -p \"D:/CyberLab/GitHub/169CPT-CCTC/01 - OS MODULE/Windows-Challenges\")",
+      "Bash(mkdir -p \"D:/CyberLab/GitHub/169CPT-CCTC/01 - OS MODULE/Linux-Challenges\")",
+      "Bash(mkdir -p \"D:/CyberLab/GitHub/169CPT-CCTC/02 - NETWORK MODULE/Network-Challenges\")",
+      "Bash(mkdir -p \"D:/CyberLab/GitHub/169CPT-CCTC/03 - SECURITY MODULE/Security-CTF/01_Reconnaissance\")",
+      "Bash(mkdir -p \"D:/CyberLab/GitHub/169CPT-CCTC/03 - SECURITY MODULE/Security-CTF/02_Web_Exploitation\")",
+      "Bash(wc:*)",
+      "Bash(find \"D:/CyberLab/GitHub/169CPT-CCTC\" \\\\\\( -path \"*Challenges*\" -o -path \"*Security-CTF*\" \\\\\\) -name \"*.md\" -exec wc -l {} +)",
+      "Bash(find \"D:/CyberLab/GitHub/169CPT-CCTC/01 - OS MODULE/Windows-Challenges\" -name \"*.md\" -exec wc -l {} +)",
+      "Bash(find \"D:/CyberLab/GitHub/169CPT-CCTC/01 - OS MODULE/Linux-Challenges\" -name \"*.md\" -exec wc -l {} +)",
+      "Bash(find \"D:/CyberLab/GitHub/169CPT-CCTC/02 - NETWORK MODULE/Network-Challenges\" -name \"*.md\" -exec wc -l {} +)",
+      "Bash(find \"D:/CyberLab/GitHub/169CPT-CCTC/03 - SECURITY MODULE/Security-CTF\" -name \"*.md\" -exec wc -l {} +)"
+    ]
+  }
+}

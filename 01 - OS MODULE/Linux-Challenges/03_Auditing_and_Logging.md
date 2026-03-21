@@ -244,11 +244,47 @@ Examine the rsyslog configuration for rules forwarding to `10.84.0.1`:
 
 ## 15. Parse all IP addresses from the provided XML file and generate an MD5 hash of the sorted output. What is the hash?
 
-**Answer:**
+### [Step-by-Step Breakdown]
+
+1. **Step 1 -- Extract IP addresses from the XML file using `grep`:**
+
+```bash
+grep -oP '\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}' scan.xml
+```
+
+   - `-o` outputs only the matching portion of each line (just the IP, not the whole line)
+   - `-P` enables Perl-compatible regex for `\d` digit shorthand
+   - The pattern matches standard IPv4 addresses (1-3 digits separated by dots)
+
+2. **Step 2 -- Alternatively, use `grep` with extended regex and `sed` for cleanup:**
+
+```bash
+grep -oE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' scan.xml
+```
+
+   If the XML has attributes like `addr="192.168.1.1"`, you can also use `sed`:
+
+```bash
+sed -n 's/.*addr="\([0-9.]*\)".*/\1/p' scan.xml
+```
+
+3. **Step 3 -- Sort and deduplicate the output:**
+
+```bash
+grep -oP '\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}' scan.xml | sort -u
+```
+
+   - `sort -u` sorts the IPs lexicographically and removes duplicates
+
+4. **Step 4 -- Pipe the sorted unique IPs into `md5sum`:**
 
 ```bash
 grep -oP '\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}' scan.xml | sort -u | md5sum
 ```
+
+   This produces the final hash of the sorted, deduplicated IP list.
+
+**Answer:**
 
 ```
 0e850f14fc192c5105955ec094287bd2
@@ -258,11 +294,42 @@ grep -oP '\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}' scan.xml | sort -u | md5sum
 
 ## 16. Pretty-print the provided JSON file and generate an MD5 hash of the formatted output. What is the hash?
 
-**Answer:**
+### [Step-by-Step Breakdown]
+
+1. **Step 1 -- Pretty-print the JSON file using `jq` or `python3`:**
+
+   Option A -- Using `jq`:
 
 ```bash
-python3 -m json.tool <input.json> | md5sum
+jq '.' input.json
 ```
+
+   - `jq '.'` reads the JSON and outputs it with proper indentation (4-space indent by default in some versions, 2-space in others)
+
+   Option B -- Using Python's `json.tool`:
+
+```bash
+python3 -m json.tool < input.json
+```
+
+   - `json.tool` reads JSON from stdin and pretty-prints it with 4-space indentation
+   - This is the standard approach and produces consistent output
+
+2. **Step 2 -- Pipe the pretty-printed output directly to `md5sum`:**
+
+```bash
+python3 -m json.tool < input.json | md5sum
+```
+
+   Or with `jq`:
+
+```bash
+jq '.' input.json | md5sum
+```
+
+   Note: The hash will differ between `jq` and `python3 -m json.tool` because they may use different indentation levels and formatting rules. Use whichever tool the challenge expects.
+
+**Answer:**
 
 ```
 25ebedf7442e470eaaa48b5f7d5b96f4
