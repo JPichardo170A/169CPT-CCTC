@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0d1117,50:1a1f2e,100:00ff88&height=200&section=header&text=169CPT--CCTC%20Repository&fontSize=36&fontColor=00ff88&fontAlignY=38&desc=Cyber%20Common%20Technical%20Core%20%7C%20Technical%20Labs%20%7C%20Operational%20Reference&descAlignY=58&descSize=16&descColor=8b949e" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0d1117,50:1a1f2e,100:00ff88&height=200&section=header&text=169CPT%20CCTC%20Repository&fontSize=36&fontColor=00ff88&fontAlignY=38&desc=Cyber%20Common%20Technical%20Core%20%7C%20Technical%20Labs%20%7C%20Operational%20Reference&descAlignY=58&descSize=16&descColor=8b949e" />
 
 [![Author](https://img.shields.io/badge/WO1%20Pichardo-Jonathan-00ff88?style=for-the-badge&logo=shield&logoColor=white)](https://github.com/JPichardo170A)
 [![Unit](https://img.shields.io/badge/Unit-169th%20Cyber%20Protection%20Team-1a1f2e?style=for-the-badge&logo=shield&logoColor=00ff88)](https://github.com/JPichardo170A)
