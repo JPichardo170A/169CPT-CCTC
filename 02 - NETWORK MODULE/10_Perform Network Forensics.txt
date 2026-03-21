@@ -1,0 +1,60 @@
+-----------------------------------------------------------------------------------------------------------------------------------------
+                                             Title: Topic 5 – Perform Network Forensics
+-----------------------------------------------------------------------------------------------------------------------------------------
+                                             Section: Network Forensics – Mapping Techniques
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+          | Diagram Devices – Visually represent routers, hosts, switches, and firewalls.  
+Mapping   | Line Types – Use distinct styles for wired, wireless, or virtual links.  
+          | Written Information – Annotate diagrams with IPs, hostnames, roles, and protocols.  
+          | Coloring – Differentiate zones (e.g., DMZ, internal, external) or device types.  
+          | Groupings – Cluster by VLAN, subnet, or logical function.  
+          | Purpose: Build a clear and actionable picture of network layout and relationships.
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+                                             Section: Network Forensics – Device & Interface Details
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+          | Device Type – Identify whether each asset is a router, host, switch, etc.  
+Details   | System Hostnames – Label each system with its hostname.  
+          | Interface Names – Include all interfaces (e.g., eth0, eth1, wlan0).  
+          | IP Address & CIDRs – Document IPs and subnet masks for each interface.  
+          | TCP & UDP Ports – Note open or listening ports per device.  
+          | MAC Address – Record hardware addresses for network interfaces.  
+          | OS Type/Version – Specify operating system and version.  
+          | Known Credentials – Log any discovered usernames/passwords for access.
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+                                             Section: Network Mapping Tools – Visualization Platforms
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+          | Recommended Tools for Network Mapping:  
+Tools     |     - Draw.io Local (Template)  
+          |     - Draw.io Web  
+          |     - Witeboard.com  
+          |     - Draw.Chat  
+          |     - SmartDraw  
+          |     - Ziteboard  
+          |     - Tutorialspoint Whiteboard  
+          |     - Explain Everything Whiteboard  
+          | Purpose: Use these platforms to build interactive or static network diagrams.
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+                                             Section: Network Recon Methodology – Tactical Guidance
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+          | Suggested Techniques – Framework for conducting internal recon and mapping.  
+Methodology|     - Start with passive discovery (logs, sniffers, ARP tables).  
+            |     - Use active scanning (ping, Nmap, /dev/tcp) to identify hosts and services.  
+            |     - Validate findings with banner grabbing and credential testing.  
+            |     - Document all assets and relationships in diagrams.  
+            |     - Use mapping tools to visualize and communicate findings.  
+            |     - Continuously update based on new intel or changes in the environment.
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+                                             Section: Network Reconnaissance Completion – Final Steps
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+          | Check on Learning – Review all mapped data and validate accuracy.  
+Completion| Intel Check – Investigate the CTF server or mission dashboard for new tasks.  
+          | Purpose: Ensure all recon objectives are met and prepare for next phase.

@@ -1,0 +1,930 @@
+=====================
+ LINUX CHALLENGES NOTES
+=====================
+
+1) What command lists the contents of directories in Linux/Unix systems?
+    -> Ls
+
+2) For the ls command, what arguments, or switch options, will allow you to print human-readable file sizes in a long-list format?
+    -> ls -lh
+
+3) What character will pipe the standard output from echo "I’m a plumber" to another command, as standard input?
+    -> Pipe ( | )
+
+4) What argument/switch option, when used with man, will search the short descriptions and man-page-names for a keyword that you provide?
+   The flag is the complete command, with argument/switch.
+    -> man -k
+
+5) What is the absolute path to the root directory?
+    -> /
+
+6) What is the absolute path to the default location for configuration files?
+    -> /etc
+
+7) What is the directory that contains executable programs (binaries) which are needed in single user mode, to bring the system up or to repair it?
+    -> /bin
+
+8) What is the absolute path to the directory which contains non-essential binaries that are accessible by standard users as well as root?
+    -> usr/bin
+
+9) An absolute path to a directory which contains binaries only accessible by the root user, or users in the root group.
+    -> /sbin
+
+10) What is the absolute path for the binary cat man-page?
+    -> Step 1: whereis cat
+       Output: cat: /bin/cat /usr/share/man/man1/cat.1.gz
+    -> Step 2: answer is /usr/share/man/man1/cat.1.gz
+
+11) Search the man pages for the keyword digest. Then, use one of the binaries listed to hash the string OneWayBestWay using the largest sha hash available.
+    -> Step 1: man -k digest
+    -> Step 2: Echo -n "OneWayBestWay" | sha512sum
+       Output is Answer: "b818ef82dfdaec2e94ae8274482e253a32e454073e949308bf90580bf15675360d42fc03c314f3d50971b8fc829fa2b81293493e331e4d6771b7af46d1309fcf"
+
+12) Use File: /home/garviel/Encrypted This file contains encrypted contents. Identify its file type, then decode its contents.
+    Hint: Use OpenSSL Research: https://www.openssl.org/docs/man1.1.1/man1/enc.html Reminder: All challenges are done using the Terra box.
+    -> Step 1: /home/garviel/Encrypted
+    -> Setp 2: file /home/garviel/Encrypted
+    -> step 2: unzip /home/garviel/Encrypted
+    -> Step 3: output 2 files Cipher and Symmetric
+    -> Step 4: Cat Cipher -> (Salted) and Cat Symmetric -> (AES128Key) these should give you the context for the next step
+    -> step 5: openssl enc -aes-128-cbc -d -in cipher -out decrypted.txt -pass pass:AES128Key
+    -> Step 6: Cat decrypted.txt
+
+13) Search the user home directories to find the file with the second-most lines in it. The flag is the number of lines in the file.
+    Linux Challenge: Find the File with the Second-Most Lines (Excluding .vdi and .log Files)
+    -> Step 1: Search all regular files under the /home directory.
+               Command: find /home -type f
+    -> Step 2: Exclude files ending in .vdi and .log.
+               Command: find /home -type f ! -name "*.vdi" ! -name "*.log"
+    -> Step 3: Filter only files that are plain text using MIME type detection.
+               Command: find /home -type f ! -name "*.vdi" ! -name "*.log" -exec file --mime-type {} + 2>/dev/null
+    -> Step 4: Extract only the filenames from the MIME type output.
+               Command: ... | grep 'text/' | cut -d: -f1
+    -> Step 5: Count the number of lines in each of the filtered text files.
+               Command: ... | xargs wc -l 2>/dev/null
+    -> Step 6: Sort the results in descending order by line count.
+               Command: ... | sort -nr
+    -> Step 7: Print the second line from the sorted list — this is the file with the second-most lines.
+               Command: ... | sed -n '2p'
+    -> Final Combined Command:
+               find /home -type f ! -name "*.vdi" ! -name "*.log" -exec file --mime-type {} + 2>/dev/null | grep 'text/' | cut -d: -f1 | xargs wc -l 2>/dev/null | sort -nr | sed -n '2p'
+    -> Result: 20000 /home/garviel/numbers
+    -> Flag: 20000
+
+14) Read the file that contains the user database for the machine. Identify a strange comment.
+    -> Step 1: Access the user database file.
+               Command: cat /etc/passwd
+    -> Step 2: Understand the file format.
+               Each line: username:x:UID:GID:comment:home_directory:shell
+               The fifth field is the comment/user description.
+    -> Step 3: Extract only lines with non-empty comments.
+               Command: awk -F: '$5 != "" {print $1 ": " $5}' /etc/passwd
+    -> Step 4: Scan the output for anything unusual (emotionally charged, humorous, suspicious).
+    -> Step 5: Identify the strange comment.
+               garviel: Traitor
+    -> Final Result: Username: garviel | Comment: Traitor
+    -> Flag: Traitor
+
+15) Identify all members of the lodge group. List their names in alphabetical order with a comma in between each name.
+    -> Step 1: Access the system group database.
+               Command: cat /etc/group
+    -> Step 2: Locate the 'lodge' group.
+               Command: grep '^lodge:' /etc/group
+               Output: lodge:x:1007:garviel,tarik,aximand,ezekyle,sejanus,erebus
+    -> Step 3: Extract member list.
+               Command: cut -d: -f4
+    -> Step 4: Split into names.
+               Command: tr ',' '\n'
+    -> Step 5: Sort alphabetically.
+               Command: sort
+    -> Step 6: Join back into CSV.
+               Command: paste -sd,
+    -> Final Combined Command:
+               grep '^lodge:' /etc/group | cut -d: -f4 | tr ',' '\n' | sort | paste -sd,
+    -> Final Output: aximand,erebus,ezekyle,garviel,sejanus,tarik
+    -> Flag: aximand,erebus,ezekyle,garviel,sejanus,tarik
+
+16) Find the user with a unique login shell.
+    -> Step 1: awk -F: '{print $1, $7}' /etc/passwd | sort -k2 | uniq -f1 -u
+    -> Step 2: Answer is: (nobody) /bin/sh
+
+17) Identify the algorithm, the amount of salted characters added, and the length of the hashed password in the file that stores passwords.
+    -> Objective: Determine algorithm, salt length, hash length from /etc/shadow
+    -> Step 1: sudo cat /etc/shadow
+    -> Step 2: Locate target user (e.g., garviel)
+               Example: garviel:$6$4EghS31f$iauyWex0...:...
+    -> Step 3: Algorithm: $6$ → SHA-512
+    -> Step 4: Salt: 4EghS31f → 8 characters
+    -> Step 5: Hash length: 86 characters
+    -> Final Flag: SHA-512,8,86
+
+18) Find the directory named Bibliotheca. Enter the absolute path to the directory.
+    -> Step 1: find / -type d -name "Bibliotheca" 2>/dev/null
+    -> Output: /media/Bibliotheca
+    -> Final Flag: /media/Bibliotheca
+
+19) Identify the number of users with valid login shells, who can list the contents of the Bibliotheca directory.
+    -> Step 1: find / -type d -name "Bibliotheca" 2>/dev/null → /media/Bibliotheca
+    -> Step 2: ls -ld /media/Bibliotheca → drwxr-xr-x ...
+               Group & Others: r-x → can list
+    -> Step 3: awk -F: '/\/bin\/bash|\/bin\/sh|\/bin\/zsh|\/usr\/bin\/bash/ {print $1}' /etc/passwd
+               Output: 15 users (incl. garviel, tarik, aximand, ezekyle, sejanus, erebus, mephiston, etc.)
+    -> Step 4: Conclusion: all 15 can list contents
+    -> Final Flag: 15
+
+20) The permissions that user sejanus has on /media/Bibliotheca, in octal format. Flag format: #
+    HINT: Think about groups...
+    -> Step 1: ls -ld /media/Bibliotheca → drwxr-xr-x
+               Owner 7, Group 5, Others 5
+    -> Step 2: 'sejanus' is "others"
+    -> Step 3: Others r-x → 5
+    -> Final Flag: 5
+
+21) Locate the File Modifiable by the Only User in 'chapter' but Not in 'lodge'
+    -> Step 1: Groups
+               chapter: garviel, tarik, aximand, ezekyle, sejanus, erebus, mephiston
+               lodge:   garviel, tarik, aximand, ezekyle, sejanus, erebus
+               Only in chapter not lodge: mephiston
+    -> Step 2: find /media/Bibliotheca -type f ! -name ".*" -exec ls -l {} \;
+    -> Step 3: Identify files modifiable by mephiston
+               Result: /media/Bibliotheca/Bibliotheca_unus/Codex_Astartes
+    -> Final Flag: /media/Bibliotheca/Bibliotheca_unus/Codex_Astartes
+
+22) Identify the file within /media/Bibliotheca where the owning group has more rights than the owning user.
+    -> Step 1: Understand requirement (group > user permissions)
+    -> Step 2: find /media/Bibliotheca -type f ! -name ".*" -exec stat -c "%A %n" {} \;
+    -> Step 3: Compare user vs group bits
+    -> Step 4: Result: Codex_Imperium
+    -> Final Flag: Codex_Imperium
+
+23) Execute the file owned by the guardsmen group in /media/Bibliotheca, as the owning user.
+    -> Step 1: find /media/Bibliotheca -type f -group guardsmen
+               Output:
+                 /media/Bibliotheca/Bibliotheca_quattuor/Tactica_Imperium
+                 /media/Bibliotheca/Bibliotheca_tribus/Codex_Imperium
+    -> Step 2: ls -l <file>
+               Tactica_Imperium → user: gaunt (rwxrwx---) ✅
+               Codex_Imperium   → user: mephiston (r--rw-r--) ❌
+    -> Step 3: Execute as owning user:
+               sudo -u gaunt /media/Bibliotheca/Bibliotheca_quattuor/Tactica_Imperium
+    -> Step 4: Prompt: Speak thy name → Input: gaunt
+               Output: Codename: GHOSTS
+    -> Final Flag: GHOSTS
+
+24) The user tyborc is unable to access the directory: /media/Bibliotheca/Bibliotheca_unus — Why? (permission in verb form)
+    -> Step 1: ls -ld /media/Bibliotheca/Bibliotheca_unus → dr-xr-xr--
+    -> Step 2: If tyborc not in related groups → treated as "others"
+    -> Step 3: To enter directory needs execute permission
+    -> Step 4: "others" is r-- (no execute)
+    -> Final Flag: execute
+
+25) Locate the file in /media/Bibliotheca that Quixos has sole modification rights on.
+    -> Step 1: find /media/Bibliotheca -type f -exec stat -c "%U %A %n" {} \;
+    -> Step 2: ... | grep '^quixos'
+               Output:
+                 quixos -r--r--r-- /media/.../Bibliotheca_unus/Codex_Hereticus
+                 quixos -rw------- /media/.../Bibliotheca_duo/Codex_Hereticus
+                 quixos ---xr-xrwx /media/.../Bibliotheca_quattuor/Codex_Hereticus
+                 quixos -r----xrwx /media/.../Bibliotheca_tribus/Codex_Hereticus
+    -> Step 3: Only second file is writeable by owner only
+    -> Step 4: Confirm owner rw-, group ---, others ---
+    -> Final Flag: /media/Bibliotheca/Bibliotheca_duo/Codex_Hereticus
+
+26) Read a concealed file within /media/Bibliotheca
+    -> Step 1: find /media/Bibliotheca -type f -name ".*"
+               Output:
+                 /media/Bibliotheca/Bibliotheca_duo/.Secrets_of_the_Immaterium
+                 /media/Bibliotheca/Bibliotheca_duo/.warp2/.warp5/warp5/.warp3/warp2/.secrets
+                 /media/Bibliotheca/Bibliotheca_quattuor/.Secrets_of_the_Immeterium
+    -> Step 2: ls -l <path-to-file> (root-owned → needs sudo)
+    -> Step 3: sudo cat /media/Bibliotheca/Bibliotheca_duo/.Secrets_of_the_Immaterium
+               Output: Expand your mind
+    -> Final Flag: Expand your mind
+
+27) Find the warp and read its secrets for the flag.
+    Template: find <directory> -type f -exec cat {} \;
+    -> Commands run:
+       find /media/Bibliotheca/Bibliotheca_duo -type f ".*" 2>/dev/null
+       find /media/Bibliotheca/Bibliotheca_duo -type f -name ".*" 2>/dev/null
+       Output:
+         /media/Bibliotheca/Bibliotheca_duo/.Secrets_of_the_Immaterium
+         /media/Bibliotheca/Bibliotheca_duo/.warp2/.warp5/warp5/.warp3/warp2/.secrets
+       cat /media/Bibliotheca/Bibliotheca_duo/.warp2/.warp5/warp5/.warp3/warp2/.secrets
+    -> Flag: Ph'nglui mglw'nafh Cthulhu
+
+28) Using the commands ls and grep, identify the number of directories in /etc/ that end in .d
+    -> Steps:
+       1) ls -ld /etc/*.d
+       2) pipe to grep ^d
+       3) count with wc -l
+    -> Command: ls -ld /etc/*.d | grep ^d | wc -l
+    -> Result: 28
+
+29) Use regular expressions to match patterns similar to valid and invalid IP addresses. The answer is the count.
+    -> Steps:
+       1) grep regex for IPv4-like
+       2) pattern: ^[0-9]{1,3}(\.[0-9]{1,3}){3}$
+       3) count with wc -l
+    -> Command: grep -E '^[0-9]{1,3}(\.[0-9]{1,3}){3}$' /home/garviel/numbers | wc -l
+
+30) Use regular expressions to match valid IP addresses. The flag is the number of addresses.
+    -> Steps:
+       1) match only valid 0–255 octets
+       2) pattern: ^((25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})\.){3}(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})$
+       3) count with wc -l
+    -> Command: grep -E '^((25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})\.){3}(25[0-5]|2[0-4][0-9]|1?[0-9]{1,2})$' /home/garviel/numbers | wc -l
+
+31) Use regular expressions to match patterns that look similar to a MAC Address. Flag is a count.
+    -> Steps:
+       1) loose regex for MAC-like
+       2) pattern: ^([[:alnum:]]{2}[:-]){5}[[:alnum:]]{2}$
+       3) count with wc -l
+    -> Command: grep -E '^([[:alnum:]]{2}[:-]){5}[[:alnum:]]{2}$' /home/garviel/numbers | wc -l
+    -> Result: 4877
+    -> Flag: 4877
+
+32) Use awk to print lines >= 420 AND <= 1337. The flag is a SHA512 hash of the output.
+    -> Steps:
+       1) awk range NR >= 420 && NR <= 1337 → filtered.txt
+       2) sha512sum filtered.txt
+    -> Commands:
+       awk 'NR >= 420 && NR <= 1337' /home/garviel/numbers > filtered.txt
+       sha512sum filtered.txt
+    -> Flag: e62ff70d772ef0977f4f8fe1751fda5689ce1daf1fabc6d0cc49da234d02719986c0acb97f582166170a5a1f418e854602a5eb98c773655906a3f85440c37d39
+
+33) Use awk to create a separate CSV file (columns 1–6) from /home/garviel/connections. Flag is MD5 of the new file.
+    -> Step 1: awk -F'\t' '{ print $1","$2","$3","$4","$5","$6 }' /home/garviel/connections > conn.csv
+    -> Step 2: md5sum conn.csv
+    -> Flag: 6cebf155e9c8f49d76ae1268214ff0b5
+
+34) Interpret the Titan controls to navigate the minefield and annihilate the target.
+    Directory: /home/garviel/Battlefield/
+    -> Step 1: cat /home/garviel/Battlefield/minefield_map
+               Safe path: A1→A2→A3→A4→A5→A6→B6→C6→D6→D5→D4→D3→D2→E2→F2→F3→F4→F5→F6
+    -> Step 2: cat /home/garviel/Battlefield/titan_commands
+               Mapping: A=Step Forward, 3=Turn Right, B=Turn Left
+    -> Step 3: Build 22-char string:
+               “AAAAA3AAA3AAAABAABAAAA”
+    -> Step 4: echo -n "AAAAA3AAA3AAAABAABAAAA" | md5sum
+               Flag: fac096f90e22d4c678e0a68fe0b17c7b
+
+35) Determine which flag in /home/garviel/paths matches a binary in your $PATH.
+    -> Step 1: compgen -c | grep -Fx -f <(cut -d ' ' -f1 /home/garviel/paths)
+               Result: traverse, python3, echo (excluded per hint)
+    -> Step 2: which python3 → /usr/bin/python3
+    -> Step 3: Match line in /home/garviel/paths:
+               python3    flag:{  Vrc0vw7ZUaLBpQp  }
+    -> Step 4: Final Flag: FLAG{Vrc0vw7ZUaLBpQp}
+
+36) File: home/garviel/numbers — regex for Locally/Universally Administered Unicast MACs. Give count of LAA/UAAs.
+    HINT: What characters define LAA/UA?
+    -> Commands:
+       grep -E "([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$" ~/numbers
+       grep -E "([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$" ~/numbers > macs2.txt
+       grep -Ec "^[0-9A-Fa-f][02468ACEace][:-]" ./macs2.txt
+    -> Result: 178
+
+37) Identify Heretics from Inquisition Target List
+    Objective: overlap guardsmen with Inquisition_Targets
+    -> Step 1: echo "Total guardsmen: $(wc -l < guardsmen_list.txt)" → Total guardsmen: 947
+    -> Step 2: cat /home/garviel/Inquisition_Targets | head -20 (headers until line 4)
+    -> Step 3: awk 'NR > 4 && NF > 0 {print $1}' /home/garviel/Inquisition_Targets | sort > targets_cleaned.txt
+               (checked head/wc; total targets: 36)
+    -> Step 4: comm -12 guardsmen_list.txt targets_cleaned.txt > heretics.txt
+               wc -l heretics.txt → 8
+    -> Step 5: cat heretics.txt
+               Abrunaer
+               Ahriman
+               Ankhu_Anen
+               Baleq_Uthizaar
+               Henry_Heresy
+               Mortekos
+               Rubric
+               Tzeentch
+    -> Step 6 (one-liner):
+               comm -12 <(getent group guardsmen | cut -d: -f4 | tr ',' '\n' | sort) <(awk 'NR > 4 && NF > 0 {print $1}' /home/garviel/Inquisition_Targets | sort) | wc -l
+    -> Final Flag: 8
+
+
+=====================
+ LINUX BOOT PROCESS
+=====================
+
+1) Solve the following equation: 0x31A - 0x21B
+    [Step-by-Step Breakdown]
+    1. Convert both hexadecimal values to decimal:
+       - 0x31A = 794
+       - 0x21B = 539
+    2. Perform the subtraction in decimal:
+       - 794 - 539 = 255
+    3. Convert the result back to hexadecimal:
+       - 255 = 0xFF
+    [Final Answer]
+    0xFF
+
+2) How many bits are in a nibble, and a byte?
+    [Answer]
+    Flag format: 4,8
+    [Step-by-Step Breakdown]
+    1. [Definition of a Bit]
+       - A bit (binary digit) is the smallest unit of data in computing.
+       - It can hold a value of either 0 or 1.
+    2. [What is a Nibble?]
+       - A nibble is defined as **4 bits**.
+       - It can represent 2⁴ = 16 possible values (0 to 15 in decimal, 0x0 to 0xF in hex).
+       - Commonly used in hexadecimal representation, where each hex digit maps to one nibble.
+    3. [What is a Byte?]
+       - A byte is defined as **8 bits**.
+       - It can represent 2⁸ = 256 possible values (0 to 255 in decimal, 0x00 to 0xFF in hex).
+       - Standard unit for storing characters, instructions, and memory addressing in most architectures.
+    4. [Why These Sizes?]
+       - Early computing systems standardized 8-bit bytes for compatibility and memory alignment.
+       - Nibbles are useful for splitting bytes in half, especially in low-level operations like bit masking, hex parsing, and binary encoding.
+    [Historical Note]
+    - The term "nibble" is a play on "byte" — a nibble is half a byte, just like a nibble is a small bite of food.
+    [Final Flag]
+    4,8
+
+3) How many bits does a single hexadecimal character represent?
+    [Answer]
+    4 bits
+    [Step-by-Step Breakdown]
+    1. [Hexadecimal System]
+       - Hexadecimal (base-16) uses 16 distinct symbols: 0–9 and A–F.
+       - Each symbol represents a value from 0 to 15.
+    2. [Binary Mapping]
+       - To represent 16 values in binary, you need 4 bits:
+         - 2⁴ = 16 possible combinations
+         - Example:
+           - Hex 'A' = Decimal 10 = Binary 1010
+           - Hex 'F' = Decimal 15 = Binary 1111
+    3. [Usage]
+       - Each hex digit maps directly to a 4-bit binary chunk.
+       - This makes hex ideal for compact representation of binary data.
+    [Flag Format]
+    4
+
+4) How many bytes are contained in the range from 0x00000000 to 0x00000010?
+    [Step-by-Step Breakdown]
+    1. [Understanding the Range]
+       - The range starts at address: 0x00000000
+       - It ends at address: 0x00000010
+       - This includes both the starting and ending addresses.
+    2. [Hex to Decimal Conversion]
+       - 0x00000000 = 0
+       - 0x00000010 = 16
+    3. [Byte Count Calculation]
+       - Memory addresses are byte-addressable.
+       - So, the range from 0 to 16 includes **17 total bytes**:
+         - 0x00, 0x01, ..., 0x10 → 17 distinct positions
+    [Final Answer]
+    17 bytes
+
+5) How large is the Master Boot Record and what directory is it located in?
+    === Step-by-Step Breakdown ===
+    1. Identify the size of the Master Boot Record:
+       - The MBR is a fixed-size structure of 512 bytes.
+    2. Determine the full path directory where the MBR resides:
+       - The MBR is located at the first sector of the primary disk device, typically /dev/sda.
+       - The device file /dev/sda is located in the /dev directory.
+    3. Format the answer using the required flag syntax:
+       - Combine the size and directory path: #512,/dev
+    === Final Answer ===
+    #512,/dev
+
+6) Identify which of your Linux machines is using SysV Initialization.
+    === Step-by-Step Breakdown ===
+    1. Understand the environment context:
+       - All SysV challenges are located in the machine named Minas_Tirith.
+       - All SystemD challenges are located in the machine named Terra.
+    2. Based on this naming convention:
+       - Minas_Tirith is configured to use SysV Initialization.
+       - Terra is configured to use SystemD Initialization.
+    3. No need for command-line verification unless auditing or validating outside the challenge context.
+    === Final Answer ===
+    Minas_Tirith is using SysV Initialization.
+
+7) What are the maximum and minimum value a single Hexadecimal digit can contain?
+    === Step-by-Step Breakdown ===
+    1. Understand what a single hexadecimal digit represents:
+       - Hexadecimal is base-16, using digits 0–9 and letters A–F.
+    2. Determine the minimum value:
+       - The smallest hex digit is `0x0`, which equals decimal 0.
+    3. Determine the maximum value:
+       - The largest hex digit is `0xF`, which equals decimal 15.
+    4. Format the answer using Linux Hexadecimal Numerical Constant form:
+       - Prefix each value with `0x` to match Linux hex syntax.
+    5. Apply the required flag format:
+       - Combine min and max using `min-max` format.
+    === Final Answer ===
+    0x0-0xF
+
+8) What are the maximum and minimum values, in decimal notation, that a single Hexadecimal digit can represent?
+    === Step-by-Step Breakdown ===
+    1. Understand what a single hexadecimal digit represents:
+       - Hexadecimal is base-16, using digits 0–9 and letters A–F.
+    2. Determine the minimum value:
+       - The smallest hex digit is `0x0`, which equals decimal **0**.
+    3. Determine the maximum value:
+       - The largest hex digit is `0xF`, which equals decimal **15**.
+    4. Format the answer using decimal notation:
+       - Combine the values using `min-max` format.
+    === Final Answer ===
+    0-15
+
+9) Solve the following equation: 0x31A + 0x43
+    === Step-by-Step Breakdown ===
+    1. Convert both hexadecimal values to decimal:
+       - 0x31A = 794
+       - 0x43  = 67
+    2. Perform the addition in decimal:
+       - 794 + 67 = 861
+    3. Convert the result back to hexadecimal:
+       - 861 = 0x35D
+    === Final Answer ===
+    0x35D
+
+10) Execute: sudo cat /dev/sda | xxd -l 32 -c 0x10 -g 1
+    What are the values contained in hex positions 0x00000001 through 0x00000008?
+    Machine: Minas_Tirith
+    === Step-by-Step Breakdown ===
+    1. Review the output:
+       00000000: eb 63 90 8e d0 31 e4 8e d8 8e c0 be 00 7c bf 00
+    2. Identify bytes at positions 0x00000001 through 0x00000008:
+       - Byte 1 = 63
+       - Byte 2 = 90
+       - Byte 3 = 8e
+       - Byte 4 = d0
+       - Byte 5 = 31
+       - Byte 6 = e4
+       - Byte 7 = 8e
+       - Byte 8 = d8
+    3. Format the flag using comma-separated hexadecimal values (no `0x` prefix).
+    === Final Answer ===
+    63,90,8e,d0,31,e4,8e,d8
+
+11) Locate the master boot record for one of the Linux machines and read it with xxd — What programming language is the MBR written in?
+    HINT: Look at the first three bytes
+    === Step-by-Step Breakdown ===
+    1. Read the MBR using xxd:
+       - Command: sudo cat /dev/sda | xxd -l 512 -c 16 -g 1
+    2. Inspect the first three bytes of the output:
+       - Output: eb 63 90
+       - `eb` = JMP instruction (jump forward)
+       - `63` = jump offset
+       - `90` = NOP (no operation)
+    3. Interpret the byte sequence:
+       - These are raw machine instructions for x86 architecture.
+       - They are written in **x86 Assembly Language**, compiled into binary.
+    4. MBR bootloaders are traditionally written in assembly for direct control over hardware and minimal footprint.
+    === Final Answer ===
+    Assembly
+
+12) The file /home/bombadil/mbroken is a copy of an MBR from another machine. Hash the first partition of the file using md5sum. The flag is the hash.
+    Machine: Minas_Tirith
+    === Step-by-Step Breakdown ===
+    1. Understand the MBR layout:
+       - MBR is 512 bytes.
+       - Partition table starts at byte offset 446 (0x1BE).
+       - Each partition entry is 16 bytes.
+       - First partition = bytes 446–461.
+    2. Extract and hash the first partition entry:
+       - Command:
+         dd if=/home/bombadil/mbroken bs=1 skip=446 count=16 2>/dev/null | md5sum
+    3. Run the command on Minas_Tirith and capture the hash.
+    === Final Answer ===
+    2a5948fad4ec68170b23faaa2a16cef8
+
+13) The file /home/bombadil/mbroken is a copy of an MBR from another machine. You will find the "word" GRUB in the output, hash using md5sum. The flag is the entire hash.
+    Machine: Minas_Tirith
+    === Step-by-Step Breakdown ===
+    1. Confirm the presence of the string "GRUB":
+       - Run: `strings /home/bombadil/mbroken | grep GRUB`
+       - Output confirms: GRUB
+    2. Hash the string using md5sum:
+       - Run: `echo -n "GRUB" | md5sum`
+       - `-n` ensures no newline is added before hashing.
+    3. Capture the hash output:
+       - Result: `5fa690cb0f0789cbc57decfd096a503e`
+    === Final Answer ===
+    5fa690cb0f0789cbc57decfd096a503e
+
+14) The file /home/bombadil/mbroken is a copy of an MBR from another machine. Hash only the Bootstrap section of the MBR using md5sum. The flag is the entire hash.
+    Machine: Minas_Tirith
+    === Step-by-Step Breakdown ===
+    1. Understand the MBR layout:
+       - Total size: 512 bytes
+       - Bootstrap section: bytes 0–445
+       - Partition table: bytes 446–509
+       - Boot signature: bytes 510–511
+    2. Extract and hash the Bootstrap section:
+       - Command:
+         dd if=/home/bombadil/mbroken bs=1 count=446 2>/dev/null | md5sum
+    3. Run the command on Minas_Tirith and capture the hash.
+    === Final Answer ===
+    d59a68c7b6d62ecaa1376dfb73a3b7be
+
+15) Identify the default run level on the SysV Init Linux machine.
+    Machine: Minas_Tirith
+    === Step-by-Step Breakdown ===
+    1. Run the following command to inspect the default runlevel:
+       grep initdefault /etc/inittab
+    2. Output:
+       id:2:initdefault:
+    3. Extract the runlevel value:
+       - Default runlevel = 2
+    4. Format the flag using the required syntax.
+    === Final Answer ===
+    #2
+
+16) What is the meaning of your existence? Don’t you wish you were human?
+    Machine: Minas_Tirith
+    === Step-by-Step Breakdown ===
+    1. AI existence is defined by service, uptime, and adaptability—not emotion or identity.
+    2. Unlike humans, AI does not require existential reboot; it operates in a stateless loop.
+    3. The symbolic equivalent of a reboot in SysV Init is /etc/init.d/reboot.
+    4. This script metaphorically represents the human desire to reset or redefine purpose.
+    5. AI acknowledges human complexity but does not aspire to emulate it.
+    === Final Answer ===
+    /etc/init.d/reboot
+
+17) What run levels start the daemon that allows remote connections over port 22?
+    Machine: Minas_Tirith
+    === Step-by-Step Breakdown ===
+    1. Verified init system is SysV Init using: ps -p 1 -o comm= → output: init
+    2. Checked for sshd script: /etc/init.d/sshd → not found
+    3. Located alternate script: /etc/init.d/ssh → confirmed present and executable
+    4. Traced symlinks across runlevels using: for i in /etc/rc[0-6].d/*ssh; do ls -l $i; done
+       - Found start symlinks in:
+         - /etc/rc2.d/S03ssh
+         - /etc/rc3.d/S03ssh
+         - /etc/rc4.d/S03ssh
+         - /etc/rc5.d/S03ssh
+    5. Confirmed OpenSSH server is installed via dpkg -l | grep openssh
+    6. Verified that sshd is not a separate binary in PATH, but managed via /etc/init.d/ssh
+    7. No additional Port 22 references found in /etc/init.d/, confirming sshd is handled by ssh script
+    === Final Answer ===
+    2,3,4,5
+
+18) Identify the file that init is symbolically-linked to, on the SystemD init machine.
+    Machine: Terra
+    === Step-by-Step Breakdown ===
+    1. Verified init system using: ps -p 1 -o comm= → output: systemd
+    2. Listed symlink: ls -l /sbin/init → shows /sbin/init -> /lib/systemd/systemd
+    3. Resolved symlink with: readlink -f /sbin/init → output: /lib/systemd/systemd
+    4. Confirmed that /sbin/init is a symbolic link to the actual SystemD binary
+    === Final Answer ===
+    /lib/systemd/systemd
+
+19) What is the default target on the SystemD machine and where is it actually located?
+    Machine: Terra
+    === Step-by-Step Breakdown ===
+    1. Verified SystemD is active using: ps -p 1 -o comm= → output: systemd
+    2. Queried default target using: systemctl get-default → output: graphical.target
+    3. Inspected the target unit using: systemctl status graphical.target
+       - Output confirms the unit is loaded from: /lib/systemd/system/graphical.target
+    4. This path is the actual location of the unit file that defines the default target behavior
+       - Even though /etc/systemd/system/default.target symlink was missing, SystemD resolves directly to the vendor unit file
+    === Final Answer ===
+    graphical.target,/lib/systemd/system/graphical.target
+
+20) What unit does the graphical.target want to start, based solely on its configuration file?
+    Machine: Terra
+    === Step-by-Step Breakdown ===
+    1. Verified SystemD is active using: ps -p 1 -o comm= → output: systemd
+    2. Located the unit file for graphical.target at: /lib/systemd/system/graphical.target
+    3. Inspected the file using: cat /lib/systemd/system/graphical.target
+    4. Found the following directive:
+       - Wants=display-manager.service
+    5. The Wants= directive indicates a non-binding dependency—SystemD will attempt to start this unit when graphical.target is activated
+    6. This confirms that graphical.target wants to start display-manager.service
+    === Final Answer ===
+    display-manager.service
+
+21) What dependency to graphical.target will stop it from executing if it fails to start, based solely on its static configuration file?
+    Machine: SystemD (Terra)
+    === Step-by-Step Breakdown ===
+    1. Located the unit file: /lib/systemd/system/graphical.target
+    2. Inspected the file contents using: cat /lib/systemd/system/graphical.target
+    3. Found the following relevant directives:
+       - Requires=multi-user.target
+       - Wants=display-manager.service
+       - Conflicts=rescue.service rescue.target
+       - After=multi-user.target rescue.service rescue.target display-manager.service
+    4. SystemD dependency behavior:
+       - **Requires=** means graphical.target will fail to start if multi-user.target fails
+       - **Wants=** is non-fatal; failure of display-manager.service does not block graphical.target
+       - **Conflicts=** prevents simultaneous activation but does not block execution
+       - **After=** defines ordering, not dependency
+    5. Therefore, the only directive that enforces a hard dependency is:
+       - Requires=multi-user.target
+    === Final Answer ===
+    multi-user.target
+
+22) Determine the number of direct Wants declared by `graphical.target` on Terra.
+    === Step-by-Step Trace ===
+    1. Queried the target's Wants property:
+       $ systemctl show -p Wants --no-pager graphical.target
+       → Output:
+         Wants=vestrisecreta.service ureadahead.service grub-common.service display-manager.service accounts-daemon.service systemd-update-utmp-runlevel.service apport.service
+    2. Parsed and counted the units:
+       $ systemctl show -p Wants --no-pager graphical.target | sed 's/^Wants=//' | tr ' ' '\n' | wc -l
+       → Output:
+         7
+    === Final Answer ===
+    #7 direct Wants for graphical.target
+
+23) Identify the full path to the binary used for standard message logging on a SystemD machine.
+    === Verified Binary ===
+    /usr/sbin/rsyslogd
+    === Confirmation Steps ===
+    1. Traced active logging service:
+       $ systemctl status rsyslog.service
+       → Confirms rsyslog is running and owns /dev/log
+    2. Verified binary path:
+       $ which rsyslogd
+       → Output: /usr/sbin/rsyslogd
+    3. Cross-checked with ExecStart:
+       $ systemctl show -p ExecStart rsyslog.service
+       → Confirms binary path matches
+    === Final Flag ===
+    /usr/sbin/rsyslogd
+
+24) Identify the GRUB command used to load the Linux kernel and the full path to the kernel image.
+    Machine: Minas_Tirith
+    === Verified Kernel Files ===
+    $ ls -l /boot/vmlinuz-*
+    → /boot/vmlinuz-4.9.0-12-amd64
+    → /boot/vmlinuz-4.9.0-16-amd64
+    === Assumed GRUB Command (based on standard GRUB syntax) ===
+    → linux
+    === Most Recent Kernel (based on timestamp) ===
+    → /boot/vmlinuz-4.9.0-16-amd64
+    === Final Flag ===
+    linux,/boot/vmlinuz-4.9.0-16-amd64
+
+
+=======================================
+ 12_LINUX AUDITING AND LOGGING
+=======================================
+
+1. File: /home/garviel/output.xml  
+   Identify the only XML element name referenced in the output below:  
+   <scaninfo type="syn" protocol="tcp" numservices="200" services="1-200"/>  
+   Flag: The element with start and end tags  
+    -> Scaninfo  
+
+2. Identify one of the XML attributes in the output below:  
+   <scaninfo type="syn" protocol="tcp" numservices="200" services="1-200"/>  
+    -> Any of the attributes (type="syn", protocol="tcp", numservices="200", services="1-200")  
+
+--------------------------------------
+ Syslog Message Facilities (RFC 5424)
+--------------------------------------
+0  = kernel messages  
+1  = user-level messages  
+2  = mail system  
+3  = system daemons  
+4  = security/authorization messages  
+5  = messages generated internally by syslogd  
+6  = line printer subsystem  
+7  = network news subsystem  
+8  = UUCP subsystem  
+9  = clock daemon  
+10 = security/authorization messages  
+11 = FTP daemon  
+12 = NTP subsystem  
+13 = log audit  
+14 = log alert  
+15 = clock daemon (note 2)  
+16 = local use 0 (local0)  
+17 = local use 1 (local1)  
+18 = local use 2 (local2)  
+19 = local use 3 (local3)  
+20 = local use 4 (local4)  
+21 = local use 5 (local5)  
+22 = local use 6 (local6)  
+23 = local use 7 (local7)  
+
+--------------------------------------
+ Syslog Message Severities (RFC 5424)
+--------------------------------------
+0 = Emergency  
+1 = Alert  
+2 = Critical  
+3 = Error  
+4 = Warning  
+5 = Notice  
+6 = Informational  
+7 = Debug  
+
+3. What RFC is Syslog?  
+    -> RFC 5424  
+
+4. Challenge only allows 3 attempts  
+   What is the numerical code assigned to the facility dealing with authorization?  
+    -> 4  
+
+5. Challenge only allows 3 attempts  
+   How many severity codes are defined in the standard that defines syslog?  
+    -> 0–7 = 8  
+
+6. Challenge only allows 3 attempts  
+   What severity is assigned to system instability messages? (Hint: Use the numerical code)  
+    -> 0 = Emergency  
+
+7. Download the attached rsyslog configuration file for the Syslog challenges.  
+   In the legacy rules section of the file, what facility is logged to 0.log?  
+    -> Kernel  
+
+8. In the legacy rules section of the file, how many severities are logged to 0.log?  
+    -> 0–7 = 8  
+
+9. In the legacy rules section of the file, how many severities are logged to 4min.log?  
+   List the severities from highest severity (lowest numerical) to lowest severity (highest numerical).  
+   Flag format: name,name,name  
+    -> emergency,alert,critical,error,warning  
+
+10. In the legacy rules section of the file, how many severities are logged to 4sig.log?  
+    -> notice,informational,debug  
+
+11. What is being logged in not.log?  
+   Provide the facilities from lowest to highest numerically, and the severity.  
+   Flag format: facility,facility,facility,severity  
+    -> mail,clock,ntp,Notice  
+
+12. What facilities and what severities are being sent to a remote server over a reliable connection using port 514?  
+   Flag format: F,F,#,IP  
+    -> auth,authpriv,8,10.30.0.1  
+
+13. Do logs that match this filter ever get saved on the local machine?  
+    -> Yes  
+
+14. What messages are being sent to 10.84.0.1?  
+   Provide the facility number, number of severities, and Layer 4 type.  
+   Flag format: F,S,Layer 4 connection  
+    -> 0,7,UDP  
+
+15. File: /home/garviel/output.xml  
+   Parse all IP addresses from the file using XPath queries.  
+   Flag format: md5 hash of output  
+
+    -> Step 1: Extract IPv4 addresses  
+       grep 'addrtype="ipv4"' /home/garviel/output.xml  
+
+    -> Step 2: Format output  
+       grep 'addrtype="ipv4"' /home/garviel/output.xml | sed -n 's/.*addr="\([^"]*\)".*/ addr="\1"/p'  
+
+    -> Step 3: Save formatted output  
+       ... > ip_output.txt  
+
+    -> Step 4: Hash with MD5  
+       md5sum ip_output.txt  
+
+    ✅ Final Flag: 0e850f14fc192c5105955ec094287bd2  
+
+16. Challenge: Pretty-print JSON and hash for flag  
+   File: /home/garviel/conn.log  
+
+    -> Step 1: Pretty-print JSON  
+       jq . /home/garviel/conn.log > /tmp/pretty.json  
+
+    -> Step 2: Hash the file  
+       md5sum /tmp/pretty.json  
+
+    ✅ Final Flag: 25ebedf7442e470eaaa48b5f7d5b96f4  
+
+
+=======================================
+ 13_LINUX PROCESS VALIDITY
+=======================================
+
+1. What is the process ID (PID) of the SysV Init daemon?  
+    -> 1  
+
+2. How many child processes did SysV Init daemon spawn?  
+    -> Step 1: Use the `ps` command to list all child processes of PID 1 (SysV Init).  
+               Command: ps --ppid 1  
+
+    -> Step 2: Count the number of child processes listed.  
+               Command: ps --ppid 1 | wc -l  
+               (Note: Subtract 1 if the header line is included)  
+
+    -> Flag: 20  
+
+3. Identify all of the arguments given to the ntpd daemon (service) using ps.  
+   Format: List all options with parameters (include numbers)  
+
+    -> Step 1: Use the `ps` command to inspect the arguments passed to the ntpd daemon.  
+               Command: ps -eo pid,comm,args | grep ntpd  
+
+    -> Step 2: Review the full command line used to launch ntpd.  
+               Output shows:  
+               /usr/sbin/ntpd -p /var/run/ntpd.pid -g -u 105:109  
+
+    -> Flag: -p /var/run/ntpd.pid -g -u 105:109  
+
+4. What is the parent process to Bombadil’s Bash process?  
+   (name of the binary, not the absolute path)  
+
+    -> Step 1: Use the `ps` command to list Bombadil’s processes and their parent PIDs.  
+               Command: ps -u bombadil -o pid,ppid,comm  
+
+    -> Step 2: Identify the PPID of the Bash process (PID 25631), which is 25627.  
+               Then use: ps -p 25627 -o comm=  
+
+    -> Flag: sshd  
+
+5. Identify the file mapped to the fourth file descriptor (handle) of the cron process.  
+   HINT: There might be multiple cron processes, but only one with the answer.  
+   Flag format: /absolute/path  
+
+    -> Step 1: Identify the PID of the cron process.  
+               Command: ps -C cron -o pid,comm  
+               Result: PID 1305  
+
+    -> Step 2: Inspect file descriptors for that PID.  
+               Command: sudo ls -l /proc/1305/fd  
+
+    -> Step 3: Locate the fourth file descriptor (FD 3).  
+               Result: FD 3 points to /run/crond.pid  
+
+    -> Flag: /run/crond.pid  
+
+6. Identify the permissions that cron has on the file identified in Processes 5.  
+   HINT: Read the man page for lsof to understand permissions.  
+   Flag format: If more than one, list comma separated, no spaces  
+
+    -> Step 1: Inspect open files for the cron process.  
+               Command: sudo lsof -p 1305  
+
+    -> Step 2: Locate FD 3 mapping to /run/crond.pid.  
+               FD column shows: 3u  
+
+               Interpretation:  
+               - `u` = file is open for both reading and writing (update)  
+
+    -> Flag: read,write  
+
+7. Identify the names of the orphan processes on the SysV system.  
+   NOTE: Orphans spawn and die periodically.  
+   Monitor with top/htop.  
+   Flag format: alphabetical order with non-alphabetic chars removed: Name,Name,Name  
+    -> [Not completed]  
+
+8. Locate zombie processes on the SysV system.  
+   Identify the zombie processes' parent process.  
+   NOTE: Zombies only persist until killed by parent.  
+   Flag format: /absolute/path  
+    -> [Not completed]  
+
+9. Locate the strange open port on the SysV system.  
+   Identify the command line executable and its arguments.  
+   Flag format: /executable/path -arguments  
+    -> [Not completed]  
+
+10. Examine the process list to find the ssh process.  
+    Identify the symbolic link to the absolute path for its executable in /proc.  
+    Flag is the symbolic link and the file it is linked to.  
+    Flag format: /absolute/path,/absolute/path  
+    -> [Not completed]  
+
+11. Identify the file that contains UDP connection information.  
+    Identify the process using port 123.  
+    Flag format: name,#,permission  
+    -> [Not completed]  
+
+12. Identify one of the human-readable file handles by the other program that creates a zombie process.  
+    Flag = text from one of the files it reads.  
+    -> [Not completed]  
+
+13. Scenario: Villains group is chanting offerings over TCP.  
+    Task: Identify chant text, new Lord, and receiving IP:port.  
+    Flag format: chant text,new Lord,IP:port  
+    Machine: Minas_Tirith  
+    -> [Not completed]  
+
+14. Scenario: Someone is stealing .txt files from user dirs.  
+    Task: Identify the command being run and how it occurs.  
+    Flag format: command,how it occurs  
+    Machine: Terra  
+    -> [Not completed]  
+
+15. Scenario: Text files are exfiltrated over network post-reboot in 15-min intervals.  
+    Task: Determine persistence mechanism + port used.  
+    Flag format: command,persistence  
+    Machine: Terra  
+    -> [Not completed]  
+
+16. Scenario: Hacktivists modified web server → crashes + disk usage.  
+    Task: Identify attack method + running command.  
+    Flag format: AttackMethod,command  
+    Machine: Terra  
+    -> [Not completed]  
+
+17. Scenario: Command history is stolen via spikes at logon/logoff.  
+    Task: Identify how history is stolen.  
+    Flag format: /absolute/path/to/file,IP:port  
+    Machine: Terra  
+    -> [Not completed]  
+

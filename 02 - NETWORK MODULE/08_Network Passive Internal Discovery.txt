@@ -1,0 +1,82 @@
+-----------------------------------------------------------------------------------------------------------------------------------------
+                                             Title: DNS Configuration – Resolver Settings & Cache
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+          | Windows – Command: `ipconfig /displaydns`  
+DNS       |         Displays cached DNS entries from recent queries.  
+Config    | Linux – Command: `cat /etc/resolv.conf`  
+          |         Shows configured DNS servers used for name resolution.  
+          | Purpose: Understand how the system resolves domain names internally.
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+                                             Title: ARP Cache – Local IP-to-MAC Mapping
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+          | Windows – Command: `arp -a`  
+ARP       |         Displays current ARP table mapping IPs to MAC addresses.  
+Cache     | Linux – Command: `ip neighbor`  
+          |         Modern replacement for `arp -a` (deprecated).  
+          | Purpose: Identify devices on the local network and their hardware addresses.
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+                                             Title: Network Connections – Active Sockets & Services
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+          | Windows – Command: `netstat`  
+Netstat   | Linux – Command: `ss` (preferred over deprecated `netstat`)  
+/SS       | Purpose: View active TCP/UDP connections, listening ports, and associated processes.  
+          | Useful Options (`-antp`):  
+          |     - `a` – Show all active connections and listening ports.  
+          |     - `n` – Display numeric port numbers (e.g., 22 instead of SSH).  
+          |     - `t` – Show only TCP connections.  
+          |     - `u` – Show only UDP connections.  
+          |     - `p` – Display process IDs and names using each socket.
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+                                             Title: Command Path – Locate Executables
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+          | which – Shows the full path of shell commands.  
+Command   | Example: `which nmap` → `/usr/bin/nmap`  
+Path      | whereis – Locates binary, source, and man page files.  
+          | Example: `whereis ssh` → `ssh: /usr/bin/ssh /usr/share/man/man1/ssh.1.gz`  
+          | Purpose: Identify where tools are installed and how they’re accessed.
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+                                             Title: Routing Table – Network Path Awareness
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+          | Windows – Command: `route print`  
+Routing   | Linux – Command: `ip route` (preferred over deprecated `netstat -r`)  
+Table     | VyOS – Command: `show ip route`  
+          | Purpose: View how packets are routed across networks and subnets.  
+          | Reference: [Linux Routing Table Examples](https://commandmasters.com/commands/ip-route-show-linux/)
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+                                             Title: File Search – Locate Sensitive or Flagged Files
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+          | Search by name:  
+File      |     - `find / -name hint* 2> /dev/null`  
+Search    |     - `find / -iname flag* 2> /dev/null`  
+          | Purpose: Locate files with specific naming patterns, ignoring permission errors.  
+          | Notes:  
+          |     - `-name` is case-sensitive; `-iname` is case-insensitive.  
+          |     - `2> /dev/null` suppresses error output.
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+                                             Title: Local Share Drive – Check Shared Resources
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+          | Always inspect shared directories for useful files.  
+Share     | Command: `ls -al /usr/share/cctc`  
+Drive     | Purpose: Discover scripts, flags, or documentation placed in shared environments.
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+                                             Title: SSH Configuration – Port & Access Settings
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+          | Windows – Location: `C:\Windows\System32\OpenSSH\sshd_config`  
+SSH       | Linux – Location: `/etc/ssh/sshd_config`  
+Config    |     - View SSH port: `grep Port /etc/ssh/sshd_config`  
+          | Purpose: Identify SSH server settings, including port, authentication, and access controls.

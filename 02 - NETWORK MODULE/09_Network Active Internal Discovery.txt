@@ -1,0 +1,91 @@
+-----------------------------------------------------------------------------------------------------------------------------------------
+                                             Title: Topic 4 – Active Internal Discovery
+-----------------------------------------------------------------------------------------------------------------------------------------
+                                          Section: Ping Scanning – Host Discovery via ICMP
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+          | ping – Sends ICMP echo requests to check host availability.  
+Ping      | Single Host:  
+Scanning  |     `ping -c 1 172.16.82.106`  
+          | Subnet Sweep:  
+          |     `for i in {1..254}; do (ping -c 1 172.16.82.$i | grep "bytes from" &) ; done`  
+          | Nmap Alternative:  
+          |     `sudo nmap -sP 172.16.82.96/27`  
+          | Purpose: Identify live hosts within a subnet before deeper scanning.
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+                                             Section: /dev/tcp Techniques – Manual Scanning & Banner Grabbing
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+          | Banner Grabbing – Connects to a port and reads service response.  
+Banner    | Command:  
+Grab      |     `exec 3<>/dev/tcp/172.16.82.106/22; echo -e "" >&3; cat <&3`  
+          | Purpose: Extract metadata (e.g., SSH version) from open ports.  
+          | Notes:  
+          |     - Works in Bash with /dev/tcp support.  
+          |     - Useful for stealthy, low-footprint probing.
+
+          | Port Scanning – Iterates through ports to detect which are open.  
+Scan      | Command:  
+          |     `for p in {1..1023}; do (echo >/dev/tcp/172.16.82.106/$p) >/dev/null 2>&1 && echo "$p open"; done`  
+          | Purpose: Lightweight alternative to Nmap for basic port scanning.  
+          | Notes:  
+          |     - Silent scan; no banner grabbing.  
+          |     - Ideal for quick checks or restricted environments.
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+                                             Section: Nmap-Based Internal Scanning – Deep Enumeration
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+          | Full Port Scan:  
+Nmap      |     `nmap -p- 172.16.82.106`  
+Scanning  | Service Detection:  
+          |     `nmap -sV 172.16.82.106`  
+          | OS Detection:  
+          |     `nmap -O 172.16.82.106`  
+          | Aggressive Scan (OS + Services + Scripts):  
+          |     `nmap -A 172.16.82.106`  
+          | Purpose: Identify open ports, running services, and OS details for internal hosts.  
+          | Notes:  
+          |     - May trigger IDS/IPS alerts.  
+          |     - Use timing options (`-T0` to `-T5`) to adjust scan speed and stealth.
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+                                             Section: Netcat – Internal Probing & Port Checks
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+          | Netcat – Lightweight tool for probing ports and grabbing service banners.  
+Netcat    | Verbose Connection:  
+          |     `nc -v 172.16.82.106 80`  
+          | Port Scan (no data):  
+          |     `nc -zv 172.16.82.106 1-1000`  
+          | Purpose: Identify open ports and interact with services manually.  
+          | Notes:  
+          |     - Can be scripted for automation.  
+          |     - Useful for banner grabbing and service testing.
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+                                             Section: Network Forensics – Mapping & Visual Analysis
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+          | Network Forensics – Visually document internal network structure.  
+Forensics | Techniques:  
+Mapping   |     - Diagram Devices – Map routers, switches, endpoints.  
+          |     - Line Types – Use visual cues for wired/wireless links.  
+          |     - Written Information – Annotate IPs, hostnames, roles.  
+          |     - Coloring – Differentiate device types or trust zones.  
+          |     - Groupings – Cluster by VLAN, subnet, or function.  
+          | Purpose: Build a visual and analytical understanding of internal topology.
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+                                             Section: Network Recon Methodology – Tactical Guidance
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+          | Suggested Techniques – Framework for conducting internal recon.  
+Methodology|     - Begin with passive observation (logs, sniffers).  
+           |     - Use ping and /dev/tcp for host and port discovery.  
+           |     - Validate services with banner grabbing and Netcat.  
+           |     - Use Nmap for deep enumeration.  
+           |     - Document findings with diagrams and notes.  
+           |     - Correlate data to identify vulnerabilities and misconfigurations.
+
