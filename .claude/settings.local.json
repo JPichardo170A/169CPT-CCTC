@@ -16,7 +16,14 @@
       "Bash(curl:*)",
       "Bash(find \"03 - SECURITY MODULE/Security-CTF\" -name \"*.md\" -exec wc -l {} +)",
       "Bash(rm -rf .tmp)",
-      "Bash(rm -f \"02 - NETWORK MODULE/Network-Challenges/07_Capstone.md\")"
+      "Bash(rm -f \"02 - NETWORK MODULE/Network-Challenges/07_Capstone.md\")",
+      "Bash(find \"01 - OS MODULE\" -name \"*.md\" -exec wc -l {} +)",
+      "Bash(find \"02 - NETWORK MODULE\" -name \"*.md\" -exec wc -l {} +)",
+      "Bash(find \"03 - SECURITY MODULE\" -name \"*.md\" -exec wc -l {} +)",
+      "Bash(find \"04 - SSH TUNNELING MODULE\" -name \"*.md\" -exec wc -l {} +)",
+      "Bash(find \"03 - SECURITY MODULE/Security-CTF\" -name \"*.md\" ! -name \"00*\" -exec wc -l {} +)",
+      "Bash(sort -t/ -k4)",
+      "Bash(find \"03 - SECURITY MODULE/Security-CTF\" -name \"*.md\" ! -name \"00*\" -exec cat {} +)"
     ]
   }
 }
