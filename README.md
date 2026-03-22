@@ -31,7 +31,7 @@ Designed for **17C** (Cyber Operations Specialists), **17A** (Cyber Operations O
 | `01` | [OS Module](01%20-%20OS%20MODULE/) | Windows & Linux fundamentals · Boot processes · Forensics · AD | 3 | 14 |
 | `02` | [Network Module](02%20-%20NETWORK%20MODULE/) | OSI layers · Traffic analysis · Tunneling · Firewalls · Recon | 18 | 8 |
 | `03` | [Security Module](03%20-%20SECURITY%20MODULE/) | Pen testing · Exploit dev · Reverse engineering · CTF walkthroughs | 7 | 17 |
-| `04` | [SSH Tunneling Module](04%20-%20SSH%20TUNNELING%20MODULE/) | SSH tunneling labs (planned) | 0 | 0 |
+| `04` | [169CPT SSH Range](169CPT-SSH-Range/) | SSH tunneling labs (planned) | 0 | 0 |
 
 </div>
 
