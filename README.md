@@ -14,7 +14,7 @@
 
 This is a hands-on operational archive for the **Cyber Common Technical Core (CCTC)** — the technical backbone of Army cyber training. It contains lab walkthroughs, CTF challenge solutions, command references, and structured notes across OS fundamentals, networking, and security operations.
 
-Built for soldiers working through CCTC or returning to reference material in the field.
+Designed for **17C** (Cyber Operations Specialists), **17A** (Cyber Operations Officers), and **170A** (Cyber Operations Technicians) working through CCTC or returning to reference material in the field.
 
 > Looking for **WOBC course notes** (Python, PowerShell, DCO, Cloud)? See the companion repo:
 >
