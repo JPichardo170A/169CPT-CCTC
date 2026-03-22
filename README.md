@@ -12,7 +12,7 @@
 
 ## About This Repository
 
-This is a hands-on operational archive for the **Cyber Common Technical Core (CCTC)** — the technical backbone of Army cyber training. It contains lab walkthroughs, CTF challenge solutions, command references, and structured notes across OS fundamentals, networking, and security operations.
+This is a hands-on operational archive for the **Cyber Common Technical Core (CCTC)**, the technical backbone of Army cyber training. It contains lab walkthroughs, CTF challenge solutions, command references, and structured notes across OS fundamentals, networking, and security operations.
 
 Designed for **17C** (Cyber Operations Specialists), **17A** (Cyber Operations Officers), and **170A** (Cyber Operations Technicians) working through CCTC or returning to reference material in the field.
 
@@ -111,11 +111,11 @@ Each module separates **notes** (reference material) from **challenges** (quizze
 
 <br>
 
-## CCTC Networking — Miro Section Boards
+## CCTC Networking: Miro Section Boards
 
 <div align="center">
 
-> Instructor-maintained via third-party platform — not officially supported by CCTC. Use **Google Chrome** for best results.
+> Instructor-maintained via third-party platform, not officially supported by CCTC. Use **Google Chrome** for best results.
 
 | Day | Topic | Board |
 |:---:|-------|:-----:|
