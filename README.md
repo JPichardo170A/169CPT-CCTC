@@ -151,6 +151,24 @@ Each module separates **notes** (reference material) from **challenges** (quizze
 
 <br>
 
+## Feedback & Suggestions
+
+<div align="center">
+
+Your input helps improve these training materials for current and future soldiers. Whether it's a correction, a new topic idea, or a resource to share — we want to hear from you.
+
+[![Discussions](https://img.shields.io/badge/Join%20the%20Discussion-00ff88?style=for-the-badge&logo=github&logoColor=white)](https://github.com/JPichardo170A/169CPT-CCTC/discussions)
+[![Submit Feedback](https://img.shields.io/badge/Submit%20Feedback-1a1f2e?style=for-the-badge&logo=github&logoColor=00ff88)](https://github.com/JPichardo170A/169CPT-CCTC/issues/new/choose)
+
+| Channel | Use It For |
+|---------|------------|
+| [Discussions](https://github.com/JPichardo170A/169CPT-CCTC/discussions) | Questions, ideas, topic suggestions, and general conversation |
+| [Feedback Form](https://github.com/JPichardo170A/169CPT-CCTC/issues/new/choose) | Content improvements, error reports, and specific suggestions |
+
+</div>
+
+<br>
+
 ## Contact
 
 <div align="center">
