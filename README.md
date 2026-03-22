@@ -2,44 +2,23 @@
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0d1117,50:1a1f2e,100:00ff88&height=200&section=header&text=169CPT%20CCTC%20Repository&fontSize=36&fontColor=00ff88&fontAlignY=38&desc=Cyber%20Common%20Technical%20Core%20%7C%20Technical%20Labs%20%7C%20Operational%20Reference&descAlignY=58&descSize=16&descColor=8b949e" />
 
-[![Author](https://img.shields.io/badge/WO1%20Pichardo-Jonathan-00ff88?style=for-the-badge&logo=shield&logoColor=white)](https://github.com/JPichardo170A)
-[![Unit](https://img.shields.io/badge/Unit-169th%20Cyber%20Protection%20Team-1a1f2e?style=for-the-badge&logo=shield&logoColor=00ff88)](https://github.com/JPichardo170A)
-[![Course](https://img.shields.io/badge/Course-CCTC-blueviolet?style=for-the-badge&logo=bookstack&logoColor=white)](https://github.com/JPichardo170A)
-[![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=for-the-badge&logo=statuspage&logoColor=white)](.)
-
-[![Modules](https://img.shields.io/badge/Modules-4-blue?style=for-the-badge&logo=bookstack&logoColor=white)](.)
-[![Files](https://img.shields.io/badge/Files-70-orange?style=for-the-badge&logo=files&logoColor=white)](.)
-[![Format](https://img.shields.io/badge/Format-Markdown-lightgrey?style=for-the-badge&logo=markdown&logoColor=white)](.)
-[![Updated](https://img.shields.io/badge/Updated-March%202026-blue?style=for-the-badge&logo=github&logoColor=white)](.)
-
-![Kali Linux](https://img.shields.io/badge/Kali_Linux-557C94?style=flat-square&logo=kali-linux&logoColor=white)
-![Linux](https://img.shields.io/badge/Linux-FCC624?style=flat-square&logo=linux&logoColor=black)
-![Windows](https://img.shields.io/badge/Windows-0078D6?style=flat-square&logo=windows&logoColor=white)
-![Wireshark](https://img.shields.io/badge/Wireshark-1679A7?style=flat-square&logo=wireshark&logoColor=white)
-![Nmap](https://img.shields.io/badge/Nmap-4682B4?style=flat-square&logo=nmap&logoColor=white)
-![Ghidra](https://img.shields.io/badge/Ghidra-FF0000?style=flat-square&logo=ghidra&logoColor=white)
-![Metasploit](https://img.shields.io/badge/Metasploit-2596CD?style=flat-square&logo=metasploit&logoColor=white)
-![Bash](https://img.shields.io/badge/Bash-4EAA25?style=flat-square&logo=gnubash&logoColor=white)
-![PowerShell](https://img.shields.io/badge/PowerShell-5391FE?style=flat-square&logo=powershell&logoColor=white)
+[![Author](https://img.shields.io/badge/WO1%20Pichardo-169th%20CPT-4B5320?style=for-the-badge&logoColor=white)](https://github.com/JPichardo170A)
+[![Status](https://img.shields.io/badge/Status-Active-556B2F?style=for-the-badge)](.)
+[![Updated](https://img.shields.io/badge/Updated-March%202026-36454F?style=for-the-badge)](.)
 
 </div>
 
 <br>
 
-## Companion Repository
+## About This Repository
 
-> This repository covers CCTC technical labs, operational reference, CTF challenges, and hands-on walkthroughs. All **WOBC course notes and study material** live in the companion repo:
+This is a hands-on operational archive for the **Cyber Common Technical Core (CCTC)** — the technical backbone of Army cyber training. It contains lab walkthroughs, CTF challenge solutions, command references, and structured notes across OS fundamentals, networking, and security operations.
 
-<div align="center">
+Built for soldiers working through CCTC or returning to reference material in the field.
 
-[![WOBC-Notes](https://img.shields.io/badge/WOBC--Notes-Course%20Notes%20%26%20Study%20Material-00ff88?style=for-the-badge&logo=github&logoColor=white)](https://github.com/JPichardo170A/Warrant-Officer-Basic-Course-Notes)
-
-| Repo | Purpose | Contains |
-|------|---------|----------|
-| **[WOBC-Notes](https://github.com/JPichardo170A/Warrant-Officer-Basic-Course-Notes)** | Course notes & study material | Python · PowerShell · DCO · Cloud |
-| **169CPT-CCTC** *(this repo)* | Technical labs & operational reference | OS · Networking · Security · SSH Tunneling |
-
-</div>
+> Looking for **WOBC course notes** (Python, PowerShell, DCO, Cloud)? See the companion repo:
+>
+> [![WOBC Notes](https://img.shields.io/badge/WOBC%20Notes-Course%20Material-4B5320?style=for-the-badge&logo=github&logoColor=white)](https://github.com/JPichardo170A/Warrant-Officer-Basic-Course-Notes)
 
 <br>
 
@@ -58,17 +37,19 @@
 
 <br>
 
-## Purpose
+## Tools Used
 
 <div align="center">
 
-| Goal | Description |
-|:----:|-------------|
-| Notes | Consolidate course materials, notes, and technical reflections |
-| Challenges | Document challenge solutions with full step-by-step walkthroughs |
-| CTFs | Preserve CTF flags, commands, and methodology for every challenge |
-| Reference | Provide structured operational reference for future use |
-| Growth | Support continued learning and professional development |
+![Kali Linux](https://img.shields.io/badge/Kali_Linux-36454F?style=flat-square&logo=kali-linux&logoColor=white)
+![Linux](https://img.shields.io/badge/Linux-36454F?style=flat-square&logo=linux&logoColor=white)
+![Windows](https://img.shields.io/badge/Windows-36454F?style=flat-square&logo=windows&logoColor=white)
+![Wireshark](https://img.shields.io/badge/Wireshark-36454F?style=flat-square&logo=wireshark&logoColor=white)
+![Nmap](https://img.shields.io/badge/Nmap-36454F?style=flat-square&logo=nmap&logoColor=white)
+![Ghidra](https://img.shields.io/badge/Ghidra-36454F?style=flat-square&logo=ghidra&logoColor=white)
+![Metasploit](https://img.shields.io/badge/Metasploit-36454F?style=flat-square&logo=metasploit&logoColor=white)
+![Bash](https://img.shields.io/badge/Bash-36454F?style=flat-square&logo=gnubash&logoColor=white)
+![PowerShell](https://img.shields.io/badge/PowerShell-36454F?style=flat-square&logo=powershell&logoColor=white)
 
 </div>
 
@@ -153,12 +134,12 @@ Each module separates **notes** (reference material) from **challenges** (quizze
 
 ## Feedback & Suggestions
 
+Your input directly improves these materials for current and future soldiers. Found an error in a walkthrough? Have a tool or technique worth adding? Want to see a topic covered differently?
+
 <div align="center">
 
-Your input helps improve these training materials for current and future soldiers. Whether it's a correction, a new topic idea, or a resource to share — we want to hear from you.
-
-[![Discussions](https://img.shields.io/badge/Join%20the%20Discussion-00ff88?style=for-the-badge&logo=github&logoColor=white)](https://github.com/JPichardo170A/169CPT-CCTC/discussions)
-[![Submit Feedback](https://img.shields.io/badge/Submit%20Feedback-1a1f2e?style=for-the-badge&logo=github&logoColor=00ff88)](https://github.com/JPichardo170A/169CPT-CCTC/issues/new/choose)
+[![Discussions](https://img.shields.io/badge/Join%20the%20Discussion-4B5320?style=for-the-badge&logo=github&logoColor=white)](https://github.com/JPichardo170A/169CPT-CCTC/discussions)
+[![Submit Feedback](https://img.shields.io/badge/Submit%20Feedback-556B2F?style=for-the-badge&logo=github&logoColor=white)](https://github.com/JPichardo170A/169CPT-CCTC/issues/new/choose)
 
 | Channel | Use It For |
 |---------|------------|
@@ -176,9 +157,9 @@ Your input helps improve these training materials for current and future soldier
 **WO1 Jonathan Pichardo**
 169th Cyber Protection Team · US Army Cyber Branch
 
-[![Email](https://img.shields.io/badge/Army%20Email-Contact-red?style=for-the-badge&logo=gmail&logoColor=white)](mailto:jonathan.a.pichardo2.mil@army.mil)
-[![GitHub](https://img.shields.io/badge/GitHub-JPichardo170A-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/JPichardo170A)
-[![WOBC Repo](https://img.shields.io/badge/WOBC%20Notes-Course%20Material-00ff88?style=for-the-badge&logo=github&logoColor=white)](https://github.com/JPichardo170A/Warrant-Officer-Basic-Course-Notes)
+[![Email](https://img.shields.io/badge/Army%20Email-Contact-36454F?style=for-the-badge&logo=gmail&logoColor=white)](mailto:jonathan.a.pichardo2.mil@army.mil)
+[![GitHub](https://img.shields.io/badge/GitHub-JPichardo170A-4B5320?style=for-the-badge&logo=github&logoColor=white)](https://github.com/JPichardo170A)
+[![WOBC Repo](https://img.shields.io/badge/WOBC%20Notes-Companion%20Repo-556B2F?style=for-the-badge&logo=github&logoColor=white)](https://github.com/JPichardo170A/Warrant-Officer-Basic-Course-Notes)
 
 <br>
 
